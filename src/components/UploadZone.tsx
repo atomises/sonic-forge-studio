@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Upload } from 'lucide-react';
+import '../styles/UploadZone.css';
 
 interface UploadZoneProps {
   onFileSelected: (file: File) => void;
@@ -87,15 +88,21 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelected }) => {
     }
   };
 
+  const getIconClass = () => {
+    if (isDragging) return 'upload-icon dragging';
+    if (isHovering) return 'upload-icon hovering';
+    return 'upload-icon default';
+  };
+
+  const getButtonClass = () => {
+    if (isDragging) return 'upload-button dragging';
+    if (isHovering) return 'upload-button hovering';
+    return 'upload-button default';
+  };
+
   return (
     <div 
-      className={`relative w-full max-w-3xl mx-auto rounded-lg border-2 border-dashed p-12 text-center transition-all duration-300
-        ${isDragging 
-          ? 'border-demixer-accent bg-demixer-accent/10 accent-shadow' 
-          : isHovering
-            ? 'border-demixer-neon bg-demixer-neon/10 neon-shadow'
-            : 'border-demixer-charcoal bg-demixer-darker/50'
-        }`}
+      className={`upload-zone ${isDragging ? 'dragging' : ''}`}
       onDragEnter={handleDragEnter}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -111,17 +118,14 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelected }) => {
         onChange={handleFileChange}
       />
       
-      <div className={`transition-all duration-300 ${isDragging ? 'scale-110' : ''}`}>
-        <div className="mb-4">
-          <Upload 
-            className={`mx-auto h-16 w-16 transition-all duration-300 
-              ${isDragging ? 'stroke-demixer-accent' : isHovering ? 'stroke-demixer-neon' : 'stroke-gray-400'}`} 
-          />
+      <div className={`upload-content ${isDragging ? 'dragging' : ''}`}>
+        <div>
+          <Upload className={getIconClass()} />
         </div>
         
-        <h3 className="text-xl font-semibold mb-2 neon-gradient">Solte seu arquivo de áudio aqui</h3>
+        <h3 className="upload-title neon-gradient">Solte seu arquivo de áudio aqui</h3>
         
-        <p className="text-sm text-gray-400 mb-6">
+        <p className="upload-info">
           Formatos suportados: MP3, WAV, OGG
           <br/>
           Tamanho máximo: 50MB
@@ -130,13 +134,7 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelected }) => {
         <button
           type="button"
           onClick={handleButtonClick}
-          className={`px-6 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all
-            ${isDragging 
-              ? 'bg-demixer-accent text-white hover:bg-demixer-accent-hover focus:ring-demixer-accent/50' 
-              : isHovering
-                ? 'bg-demixer-neon text-white hover:bg-demixer-neon-hover focus:ring-demixer-neon/50'
-                : 'bg-demixer-charcoal text-white hover:bg-demixer-charcoal-dark focus:ring-demixer-charcoal/50'
-            }`}
+          className={getButtonClass()}
         >
           Selecionar arquivo
         </button>

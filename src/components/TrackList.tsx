@@ -1,6 +1,7 @@
 
 import React from 'react';
 import AudioTrack from './AudioTrack';
+import '../styles/TrackList.css';
 
 interface Track {
   id: string;
@@ -19,10 +20,10 @@ const TrackList: React.FC<TrackListProps> = ({ tracks }) => {
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-6 text-gradient text-center">Faixas Separadas</h2>
+    <div className="tracklist">
+      <h2 className="tracklist-title text-gradient">Faixas Separadas</h2>
       
-      <div className="space-y-4">
+      <div className="tracks">
         {tracks.map((track) => (
           <AudioTrack
             key={track.id}

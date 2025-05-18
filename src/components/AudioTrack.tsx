@@ -1,6 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Download } from 'lucide-react';
+import '../styles/AudioTrack.css';
 
 interface AudioTrackProps {
   name: string;
@@ -14,20 +15,6 @@ const AudioTrack: React.FC<AudioTrackProps> = ({ name, audioUrl, color = 'vocals
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
   const audioRef = useRef<HTMLAudioElement>(null);
-
-  const trackColors = {
-    vocals: 'from-pink-500 to-purple-600',
-    drums: 'from-blue-500 to-cyan-600',
-    bass: 'from-orange-500 to-yellow-600',
-    other: 'from-green-500 to-emerald-600',
-  };
-
-  const waveColors = {
-    vocals: 'bg-gradient-to-b from-pink-500/80 to-purple-600/80',
-    drums: 'bg-gradient-to-b from-blue-500/80 to-cyan-600/80',
-    bass: 'bg-gradient-to-b from-orange-500/80 to-yellow-600/80',
-    other: 'bg-gradient-to-b from-green-500/80 to-emerald-600/80',
-  };
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -103,26 +90,53 @@ const AudioTrack: React.FC<AudioTrackProps> = ({ name, audioUrl, color = 'vocals
     setVolume(newVolume);
   };
 
+  const getTrackProgressStyle = () => {
+    const colorStart = color === 'vocals' ? '#d946ef' : 
+                       color === 'drums' ? '#0ea5e9' : 
+                       color === 'bass' ? '#f97316' : '#10b981';
+    
+    const colorEnd = color === 'vocals' ? '#a855f7' : 
+                     color === 'drums' ? '#06b6d4' : 
+                     color === 'bass' ? '#eab308' : '#059669';
+    
+    return {
+      background: `linear-gradient(to right, ${colorStart} 0%, ${colorEnd} ${(currentTime / duration) * 100}%, #2a2a2a ${(currentTime / duration) * 100}%)`
+    };
+  };
+
+  const getVolumeStyle = () => {
+    const colorStart = color === 'vocals' ? '#d946ef' : 
+                       color === 'drums' ? '#0ea5e9' : 
+                       color === 'bass' ? '#f97316' : '#10b981';
+    
+    const colorEnd = color === 'vocals' ? '#a855f7' : 
+                     color === 'drums' ? '#06b6d4' : 
+                     color === 'bass' ? '#eab308' : '#059669';
+    
+    return {
+      background: `linear-gradient(to right, ${colorStart} 0%, ${colorEnd} ${volume * 100}%, #2a2a2a ${volume * 100}%)`
+    };
+  };
+
   return (
-    <div className="relative track-gradient p-4 rounded-lg mb-4 glass-morphism">
+    <div className="track track-gradient glass-morphism">
       <audio ref={audioRef} src={audioUrl} />
       
-      <div className="flex items-center gap-4 mb-3">
+      <div className="track-header">
         <button 
-          onClick={togglePlayPause} 
-          className={`w-10 h-10 rounded-full flex items-center justify-center transition-all
-            bg-gradient-to-br ${trackColors[color]} hover:shadow-lg hover:scale-105`}
+          onClick={togglePlayPause}
+          className={`play-button button-${color}`}
         >
           {isPlaying ? (
-            <Pause className="w-5 h-5 text-white" />
+            <Pause className="play-icon" />
           ) : (
-            <Play className="w-5 h-5 text-white ml-0.5" />
+            <Play className="play-icon play" />
           )}
         </button>
         
-        <div className="flex-grow">
-          <h3 className="font-bold text-white text-lg">{name}</h3>
-          <div className="text-xs text-gray-400 flex justify-between">
+        <div className="track-info">
+          <h3 className="track-title">{name}</h3>
+          <div className="track-time">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
@@ -130,14 +144,13 @@ const AudioTrack: React.FC<AudioTrackProps> = ({ name, audioUrl, color = 'vocals
         
         <button 
           onClick={handleDownload}
-          className="p-2 rounded-full bg-demixer-charcoal hover:bg-demixer-charcoal-dark transition-all"
+          className="download-button"
         >
-          <Download className="w-5 h-5 text-white" />
+          <Download className="download-icon" />
         </button>
       </div>
       
-      {/* Progress bar */}
-      <div className="relative mb-3">
+      <div className="progress-container">
         <input
           type="range"
           min="0"
@@ -145,22 +158,13 @@ const AudioTrack: React.FC<AudioTrackProps> = ({ name, audioUrl, color = 'vocals
           step="0.01"
           value={currentTime}
           onChange={handleSeek}
-          className="w-full h-2 bg-demixer-darker rounded-lg appearance-none cursor-pointer"
-          style={{
-            background: `linear-gradient(to right, ${color === 'vocals' ? '#d946ef' : 
-                                               color === 'drums' ? '#0ea5e9' : 
-                                               color === 'bass' ? '#f97316' : 
-                                               '#10b981'} 0%, ${color === 'vocals' ? '#a855f7' : 
-                                                              color === 'drums' ? '#06b6d4' : 
-                                                              color === 'bass' ? '#eab308' : 
-                                                              '#059669'} ${(currentTime / duration) * 100}%, #2a2a2a ${(currentTime / duration) * 100}%)`
-          }}
+          className="progress-input"
+          style={getTrackProgressStyle()}
         />
       </div>
       
-      {/* Volume control */}
-      <div className="flex items-center space-x-2">
-        <span className="text-xs text-gray-400">Vol</span>
+      <div className="volume-container">
+        <span className="volume-label">Vol</span>
         <input
           type="range"
           min="0"
@@ -168,22 +172,13 @@ const AudioTrack: React.FC<AudioTrackProps> = ({ name, audioUrl, color = 'vocals
           step="0.01"
           value={volume}
           onChange={handleVolumeChange}
-          className="w-24 h-1 bg-demixer-darker rounded-lg appearance-none cursor-pointer"
-          style={{
-            background: `linear-gradient(to right, ${color === 'vocals' ? '#d946ef' : 
-                                               color === 'drums' ? '#0ea5e9' : 
-                                               color === 'bass' ? '#f97316' : 
-                                               '#10b981'} 0%, ${color === 'vocals' ? '#a855f7' : 
-                                                              color === 'drums' ? '#06b6d4' : 
-                                                              color === 'bass' ? '#eab308' : 
-                                                              '#059669'} ${volume * 100}%, #2a2a2a ${volume * 100}%)`
-          }}
+          className="volume-input"
+          style={getVolumeStyle()}
         />
       </div>
 
-      {/* Waveform visualization */}
-      <div className="mt-4 h-16 relative overflow-hidden rounded-lg">
-        <div className={`absolute inset-0 waveform-base ${waveColors[color]} animate-waveform`}></div>
+      <div className={`waveform`}>
+        <div className={`waveform-base wave-${color} animate-waveform`}></div>
       </div>
     </div>
   );

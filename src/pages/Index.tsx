@@ -4,6 +4,7 @@ import UploadZone from '@/components/UploadZone';
 import ProcessingIndicator from '@/components/ProcessingIndicator';
 import TrackList from '@/components/TrackList';
 import DemixerHeader from '@/components/DemixerHeader';
+import '../styles/App.css';
 
 // Mock data for the tracks
 const mockTracks = [
@@ -68,10 +69,10 @@ const Index = () => {
   }, [isProcessing]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-demixer-darker to-demixer-dark text-white">
+    <div className="app">
       <DemixerHeader />
       
-      <main className="flex-grow container mx-auto px-4 pb-16">
+      <main className="main">
         {!file && !isProcessing && tracks.length === 0 && (
           <UploadZone onFileSelected={handleFileSelected} />
         )}
@@ -84,13 +85,13 @@ const Index = () => {
           <div className="animate-fade-in">
             <TrackList tracks={tracks} />
             
-            <div className="text-center mt-12">
+            <div className="new-track-button">
               <button
                 onClick={() => {
                   setFile(null);
                   setTracks([]);
                 }}
-                className="px-6 py-2 rounded-md bg-demixer-accent hover:bg-demixer-accent-hover text-white font-medium transition-all"
+                className="new-track-btn"
               >
                 Processar outra música
               </button>
@@ -99,7 +100,7 @@ const Index = () => {
         )}
       </main>
       
-      <footer className="bg-demixer-darker py-4 text-center text-gray-500 text-sm">
+      <footer className="footer">
         <p>Demixer &copy; {new Date().getFullYear()} - Estúdio de Demolição Sonora</p>
       </footer>
     </div>
