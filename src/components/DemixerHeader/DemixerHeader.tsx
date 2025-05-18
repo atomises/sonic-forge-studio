@@ -1,6 +1,6 @@
 
 import React from 'react';
-import '../styles/DemixerHeader.css';
+import './DemixerHeader.css';
 
 const DemixerHeader: React.FC = () => {
   return (

@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Download } from 'lucide-react';
-import '../styles/AudioTrack.css';
+import './AudioTrack.css';
 
 interface AudioTrackProps {
   name: string;

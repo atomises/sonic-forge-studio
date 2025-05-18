@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Upload } from 'lucide-react';
-import '../styles/UploadZone.css';
+import './UploadZone.css';
 
 interface UploadZoneProps {
   onFileSelected: (file: File) => void;

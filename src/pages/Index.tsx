@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
-import UploadZone from '@/components/UploadZone';
-import ProcessingIndicator from '@/components/ProcessingIndicator';
-import TrackList from '@/components/TrackList';
-import DemixerHeader from '@/components/DemixerHeader';
+import UploadZone from '@/components/UploadZone/UploadZone';
+import ProcessingIndicator from '@/components/ProcessingIndicator/ProcessingIndicator';
+import TrackList from '@/components/TrackList/TrackList';
+import DemixerHeader from '@/components/DemixerHeader/DemixerHeader';
 import '../styles/App.css';
 
 // Mock data for the tracks

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import '../styles/ProcessingIndicator.css';
+import './ProcessingIndicator.css';
 
 interface ProcessingIndicatorProps {
   progress?: number;

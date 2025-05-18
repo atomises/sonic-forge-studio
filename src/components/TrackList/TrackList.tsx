@@ -1,7 +1,7 @@
 
 import React from 'react';
-import AudioTrack from './AudioTrack';
-import '../styles/TrackList.css';
+import AudioTrack from '../AudioTrack/AudioTrack';
+import './TrackList.css';
 
 interface Track {
   id: string;
